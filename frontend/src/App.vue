@@ -1,12 +1,17 @@
 <template>
   <div class="page">
     <div class="notebook">
-      <div class="left">
+
+      <!-- LEFT PAGE -->
+      <div class="page-left">
         <Profile />
       </div>
-      <div class="right">
+
+      <!-- RIGHT PAGE -->
+      <div class="page-right">
         <Guestbook />
       </div>
+
     </div>
   </div>
 </template>
@@ -17,43 +22,42 @@ import Guestbook from './components/Guestbook.vue'
 </script>
 
 <style>
-/* page container */
 .page {
   min-height: 100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding: 2rem;
-  background: #f8f4f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8dfe7;
+  padding: 40px;
 }
 
-/* notebook container: uses a background image link (replace with your notebook image) */
-.notebook{
-  width: 100%;
-  max-width: 1100px;
-  height: 700px;
+/* Notebook background — replace link if needed */
+.notebook {
   display: flex;
-  gap: 20px;
-  background-image: url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1400&q=80');
+  width: 1100px;
+  max-width: 100%;
+  height: 700px;
+  background-image: url("https://i.pinimg.com/736x/b3/88/8e/b3888e368b92bf0bb623eb016b8f87e9.jpg");
   background-size: cover;
   background-position: center;
-  padding: 40px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-  border-radius: 8px;
+  padding: 50px;
+  gap: 40px;
   box-sizing: border-box;
 }
 
-/* left & right halves */
-.left, .right {
-  flex: 1 1 0;
-  background: rgba(255,255,255,0.85);
-  padding: 24px;
-  overflow:auto;
-  border-radius: 6px;
+.page-left,
+.page-right {
+  flex: 1;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
 }
 
-/* responsive */
-@media (max-width: 900px){
-  .notebook { flex-direction: column; height: auto; padding: 20px; }
+/* Responsive */
+@media (max-width: 900px) {
+  .notebook {
+    flex-direction: column;
+    height: auto;
+  }
 }
 </style>
