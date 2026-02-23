@@ -4,22 +4,54 @@
       <h2>Guestbook</h2>
 
       <label>Name</label>
-      <input type="text" />
+      <input v-model="form.name" type="text" />
 
       <label>Phone Number</label>
-      <input type="text" />
+      <input v-model="form.phone" type="text" />
 
       <label>Message</label>
-      <textarea rows="4"></textarea>
+      <textarea v-model="form.message" rows="4"></textarea>
 
       <div class="button-container">
-        <button>Submit</button>
+        <button @click="submit">Submit</button>
       </div>
     </div>
   </div>
 </template>
 
+<script setup>
+import { ref } from 'vue';
+
+const form = ref({ name: '', phone: '', message: '' });
+
+// API URL for your backend
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+// Send data to backend when the form is submitted
+async function submit() {
+  if (!form.value.name || !form.value.message) {
+    alert('Name and message are required!');
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/guestbook`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form.value),
+    });
+
+    const result = await response.json();
+    console.log('Message added:', result);
+    form.value = { name: '', phone: '', message: '' }; // Reset form after submission
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+</script>
+
 <style scoped>
+/* Styles for guestbook container */
 .guestbook {
   width: 400px;
 }
@@ -29,7 +61,6 @@
   padding: 20px;
   border-radius: 15px;
   text-align: left;
-  height: 500px;  /* Match height to profile */
 }
 
 h2 {

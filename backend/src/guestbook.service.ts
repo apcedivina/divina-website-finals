@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
 @Injectable()
 export class GuestbookService {
-  private supabase: SupabaseClient;
+  private supabase;
 
   constructor() {
     const supabaseUrl = process.env.SUPABASE_URL;
@@ -16,6 +16,7 @@ export class GuestbookService {
     this.supabase = createClient(supabaseUrl, supabaseKey);
   }
 
+  // Fetch messages from guestbook table
   async getMessages() {
     const { data, error } = await this.supabase
       .from('guestbook')
@@ -26,10 +27,11 @@ export class GuestbookService {
     return data;
   }
 
+  // Insert new guestbook entry
   async addMessage(payload: { name: string; phone?: string; message: string }) {
     const { data, error } = await this.supabase
       .from('guestbook')
-      .insert([payload]);
+      .insert([{ ...payload }]);
 
     if (error) throw error;
     return data;
