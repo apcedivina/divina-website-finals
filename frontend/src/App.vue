@@ -24,7 +24,7 @@ import Gallery from './components/Gallery.vue'
 <style>
 body {
   margin: 0;
-  font-family: 'Lobster', cursive;  /* Custom font similar to your image */
+  font-family: courier;
   background-color: #f0e0e0;
 }
 
