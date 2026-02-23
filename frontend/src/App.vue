@@ -1,63 +1,57 @@
 <template>
   <div class="page">
-    <div class="notebook">
+    <header>
+      <h1>My Personal Web Page</h1>
+    </header>
 
-      <!-- LEFT PAGE -->
-      <div class="page-left">
+    <main class="main-container">
+      <div class="top-section">
         <Profile />
-      </div>
-
-      <!-- RIGHT PAGE -->
-      <div class="page-right">
         <Guestbook />
       </div>
 
-    </div>
+      <Gallery />
+    </main>
   </div>
 </template>
 
 <script setup>
 import Profile from './components/Profile.vue'
 import Guestbook from './components/Guestbook.vue'
+import Gallery from './components/Gallery.vue'
 </script>
 
 <style>
+body {
+  margin: 0;
+  font-family: 'Lobster', cursive;  /* Custom font similar to your image */
+  background-color: #f0e0e0;
+}
+
 .page {
-  min-height: 100vh;
+  text-align: center;
+}
+
+header {
+  background-color: #f2b1b1;
+  padding: 20px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 32px;
+  color: #5b3b2e;
+}
+
+.main-container {
+  padding: 30px;
+}
+
+/* FLEX LAYOUT */
+.top-section {
   display: flex;
   justify-content: center;
-  align-items: center;
-  background: #f8dfe7;
-  padding: 40px;
-}
-
-/* Notebook background — replace link if needed */
-.notebook {
-  display: flex;
-  width: 1100px;
-  max-width: 100%;
-  height: 700px;
-  background-image: url("https://i.pinimg.com/736x/b3/88/8e/b3888e368b92bf0bb623eb016b8f87e9.jpg");
-  background-size: cover;
-  background-position: center;
-  padding: 50px;
-  gap: 40px;
-  box-sizing: border-box;
-}
-
-.page-left,
-.page-right {
-  flex: 1;
-  background: transparent;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Responsive */
-@media (max-width: 900px) {
-  .notebook {
-    flex-direction: column;
-    height: auto;
-  }
+  gap: 50px;
+  margin-bottom: 30px;
 }
 </style>

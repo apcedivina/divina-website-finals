@@ -1,59 +1,46 @@
 <template>
   <div class="profile">
-
-    <h1 class="title">my profile</h1>
-
-    <!-- ALL LEFT ALIGNED -->
-    <div class="content">
-
-      <p>name: elisha shimei divina</p>
-      <p>birthday: march 24, 2005</p>
-      <p>address: fort bonifacio, taguig</p>
+    <section class="card">
+      <p><strong>Name:</strong> Elisha Shimei C. Divina</p>
+      <p><strong>Birthday:</strong> March 24, 2005</p>
+      <p><strong>Current Address:</strong> Fort Bonifacio, Taguig City</p>
 
       <br />
 
-      <p>school: asia pacific college</p>
-      <p>course: bsit</p>
-      <p>year: 2024–2028</p>
+      <p><strong>School:</strong> Asia Pacific College</p>
+      <p><strong>Course:</strong> BSIT</p>
+      <p><strong>Year & Section:</strong> 2nd Year IT243</p>
 
       <br />
 
-      <p>hobbies: music, gaming, cooking</p>
-      <p>dislikes: bugs, seafood</p>
-      <p>fav colors: pink, beige</p>
+      <p><strong>Hobbies:</strong> Music, Gaming, Collecting, Cooking</p>
+      <p><strong>Dislikes:</strong> Bugs, Seafood</p>
+      <p><strong>Favorite Colors:</strong> Pink, Beige, Red, Purple</p>
 
-    </div>
+      <br />
 
-    <!-- CENTERED MOTTO -->
-    <div class="motto">
-      <p>life motto: "let's do our best rather than being the best" — jeong yunho</p>
-    </div>
+      <p><strong>Motto:</strong><br>
+      "Let's do our best rather than being the best - Jeong Yunho"</p>
 
+      <p><strong>Life Goals:</strong><br>
+      To become a successful IT professional in the future</p>
+    </section>
   </div>
 </template>
 
 <style scoped>
 .profile {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  font-family: 'Comic Sans MS', cursive;
+  width: 400px;
 }
 
-.title {
-  font-size: 30px;
+.card {
+  background-color: #f8d7d7;
+  padding: 20px;
   margin-bottom: 20px;
-}
-
-.content {
+  border-radius: 15px;
   text-align: left;
-  line-height: 1.8;
-  flex: 1;
-}
-
-.motto {
-  text-align: center;
-  margin-top: 40px;
-  font-style: italic;
+  height: 500px;  /* Match height to guestbook */
+  font-size: 14px;  /* Smaller font */
+  overflow-y: auto;
 }
 </style>

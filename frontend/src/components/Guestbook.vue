@@ -1,97 +1,67 @@
 <template>
   <div class="guestbook">
+    <div class="card">
+      <h2>Guestbook</h2>
 
-    <h1 class="title">guestbook</h1>
+      <label>Name</label>
+      <input type="text" />
 
-    <div class="form">
+      <label>Phone Number</label>
+      <input type="text" />
 
-      <label>name:</label>
-      <input v-model="form.name" type="text" />
-
-      <label>phone number:</label>
-      <input v-model="form.phone" type="text" />
-
-      <label>message:</label>
-      <textarea v-model="form.message"></textarea>
+      <label>Message</label>
+      <textarea rows="4"></textarea>
 
       <div class="button-container">
-        <button @click="submit">submit</button>
+        <button>Submit</button>
       </div>
-
     </div>
-
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
-
-const API = import.meta.env.VITE_API_URL
-const form = ref({ name:'', phone:'', message:'' })
-
-async function submit(){
-  if(!form.value.name || !form.value.message){
-    alert("name and message required")
-    return
-  }
-
-  await fetch(`${API}/guestbook`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(form.value)
-  })
-
-  form.value = { name:'', phone:'', message:'' }
-  alert("submitted!")
-}
-</script>
-
 <style scoped>
 .guestbook {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  font-family: 'Comic Sans MS', cursive;
+  width: 400px;
 }
 
-.title {
-  font-size: 30px;
-  margin-bottom: 20px;
+.card {
+  background-color: #f8d7d7;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: left;
+  height: 500px;  /* Match height to profile */
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 85%;          /* narrower */
+h2 {
+  text-align: center;
+  margin-top: 0;
 }
 
 label {
-  text-align: left;
+  display: block;
+  margin-top: 15px;
 }
 
-input {
-  width: 60%;          /* shorter boxes */
-  padding: 6px;
-  border: 1px solid #aaa;
-}
-
+input,
 textarea {
-  width: 80%;          /* slightly wider than input */
-  height: 160px;       /* shorter */
-  padding: 6px;
-  border: 1px solid #aaa;
-  resize: none;
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: none;
 }
 
 .button-container {
   display: flex;
-  justify-content: flex-end;   /* bottom right */
-  margin-top: 10px;
+  justify-content: flex-end;
+  margin-top: 15px;
 }
 
 button {
-  padding: 6px 16px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #f2b1b1;
   cursor: pointer;
 }
 </style>
