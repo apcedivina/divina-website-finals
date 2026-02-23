@@ -3,26 +3,25 @@
 
     <h1 class="title">my profile</h1>
 
-    <!-- TOP SECTION -->
-    <div class="top-section">
-      <div class="left-info">
-        <p>name: elisha shimei divina</p>
-        <p>birthday: march 24, 2005</p>
-        <p>address: fort bonifacio, taguig</p>
-      </div>
+    <!-- ALL LEFT ALIGNED -->
+    <div class="content">
 
-      <div class="right-info">
-        <p>school: asia pacific college</p>
-        <p>course: bsit</p>
-        <p>year: 2024–2028</p>
-      </div>
-    </div>
+      <p>name: elisha shimei divina</p>
+      <p>birthday: march 24, 2005</p>
+      <p>address: fort bonifacio, taguig</p>
 
-    <!-- MIDDLE SECTION -->
-    <div class="middle-section">
+      <br />
+
+      <p>school: asia pacific college</p>
+      <p>course: bsit</p>
+      <p>year: 2024–2028</p>
+
+      <br />
+
       <p>hobbies: music, gaming, cooking</p>
       <p>dislikes: bugs, seafood</p>
       <p>fav colors: pink, beige</p>
+
     </div>
 
     <!-- CENTERED MOTTO -->
@@ -37,33 +36,24 @@
 .profile {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  height: 100%;
   font-family: 'Comic Sans MS', cursive;
 }
 
 .title {
   font-size: 30px;
+  margin-bottom: 20px;
 }
 
-.top-section {
-  display: flex;
-  justify-content: space-between;
-}
-
-.left-info {
+.content {
   text-align: left;
-}
-
-.right-info {
-  text-align: left;
-}
-
-.middle-section {
-  text-align: left;
+  line-height: 1.8;
+  flex: 1;
 }
 
 .motto {
   text-align: center;
   margin-top: 40px;
+  font-style: italic;
 }
 </style>

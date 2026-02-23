@@ -4,6 +4,7 @@
     <h1 class="title">guestbook</h1>
 
     <div class="form">
+
       <label>name:</label>
       <input v-model="form.name" type="text" />
 
@@ -13,7 +14,10 @@
       <label>message:</label>
       <textarea v-model="form.message"></textarea>
 
-      <button @click="submit">submit</button>
+      <div class="button-container">
+        <button @click="submit">submit</button>
+      </div>
+
     </div>
 
   </div>
@@ -46,6 +50,7 @@ async function submit(){
 .guestbook {
   display: flex;
   flex-direction: column;
+  height: 100%;
   font-family: 'Comic Sans MS', cursive;
 }
 
@@ -57,22 +62,36 @@ async function submit(){
 .form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
+  width: 85%;          /* narrower */
 }
 
-input, textarea {
-  padding: 8px;
+label {
+  text-align: left;
+}
+
+input {
+  width: 60%;          /* shorter boxes */
+  padding: 6px;
   border: 1px solid #aaa;
-  width: 100%;
 }
 
 textarea {
-  height: 200px;
+  width: 80%;          /* slightly wider than input */
+  height: 160px;       /* shorter */
+  padding: 6px;
+  border: 1px solid #aaa;
+  resize: none;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;   /* bottom right */
+  margin-top: 10px;
 }
 
 button {
-  align-self: flex-end;
-  padding: 8px 16px;
+  padding: 6px 16px;
   cursor: pointer;
 }
 </style>
