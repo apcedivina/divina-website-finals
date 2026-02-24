@@ -18,7 +18,7 @@
         <button @click="submitMessage">Submit</button>
       </div>
 
-      <!-- MESSAGES -->
+      <!-- DISPLAY MESSAGES -->
       <div class="messages" v-if="messages.length">
         <h3>Messages:</h3>
 
@@ -27,7 +27,11 @@
           :key="index"
           class="message-box"
         >
-          <p><strong>{{ msg.name }}</strong> ({{ msg.phone }})</p>
+          <div class="message-header">
+            <strong>{{ msg.name }}</strong>
+            <span class="timestamp">{{ msg.date }}</span>
+          </div>
+          <p class="phone">{{ msg.phone }}</p>
           <p>{{ msg.message }}</p>
         </div>
       </div>
@@ -44,7 +48,7 @@ const phone = ref('')
 const message = ref('')
 const messages = ref([])
 
-/* LOAD saved messages when page loads */
+/* Load saved messages */
 onMounted(() => {
   const saved = localStorage.getItem('guestbookMessages')
   if (saved) {
@@ -58,14 +62,17 @@ const submitMessage = () => {
     return
   }
 
-  messages.value.push({
+  const newMessage = {
     name: name.value,
     phone: phone.value,
     message: message.value,
     date: new Date().toLocaleString()
-  })
+  }
 
-  /* SAVE to localStorage */
+  /* NEWEST ON TOP */
+  messages.value.unshift(newMessage)
+
+  /* Save to localStorage */
   localStorage.setItem(
     'guestbookMessages',
     JSON.stringify(messages.value)
@@ -142,5 +149,22 @@ button:hover {
   border-radius: 10px;
   margin-top: 8px;
   font-size: 12px;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.timestamp {
+  font-size: 10px;
+  color: #777;
+}
+
+.phone {
+  font-size: 11px;
+  color: #555;
+  margin: 2px 0;
 }
 </style>
