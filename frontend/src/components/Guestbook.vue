@@ -1,57 +1,96 @@
 <template>
   <div class="guestbook">
     <div class="card">
+
       <h2>Guestbook</h2>
 
-      <label>Name</label>
-      <input v-model="form.name" type="text" />
+      <!-- FORM -->
+      <form @submit.prevent="submitGuestbook">
+        <label>Name</label>
+        <input v-model="name" type="text" required />
 
-      <label>Phone Number</label>
-      <input v-model="form.phone" type="text" />
+        <label>Phone Number</label>
+        <input v-model="phone" type="text" required />
 
-      <label>Message</label>
-      <textarea v-model="form.message" rows="4"></textarea>
+        <label>Message</label>
+        <textarea v-model="message" rows="3" required></textarea>
 
-      <div class="button-container">
-        <button @click="submit">Submit</button>
+        <div class="button-container">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+
+      <!-- DISPLAY MESSAGES BELOW -->
+      <div class="messages">
+        <h3>Messages</h3>
+
+        <div 
+          v-for="entry in entries" 
+          :key="entry.id" 
+          class="message-box"
+        >
+          <strong>{{ entry.name }}</strong>
+          <p>{{ entry.message }}</p>
+        </div>
+
       </div>
+
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue'
+import { supabase } from '../supabase'
 
-const form = ref({ name: '', phone: '', message: '' });
+const name = ref('')
+const phone = ref('')
+const message = ref('')
+const entries = ref([])
 
-// API URL for your backend
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+// FETCH MESSAGES
+const fetchMessages = async () => {
+  const { data, error } = await supabase
+    .from('guestbook')
+    .select('*')
+    .order('id', { ascending: false })
 
-// Send data to backend when the form is submitted
-async function submit() {
-  if (!form.value.name || !form.value.message) {
-    alert('Name and message are required!');
-    return;
-  }
-
-  try {
-    const response = await fetch(`${API_URL}/guestbook`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form.value),
-    });
-
-    const result = await response.json();
-    console.log('Message added:', result);
-    form.value = { name: '', phone: '', message: '' }; // Reset form after submission
-  } catch (error) {
-    console.error('Error:', error);
+  if (!error) {
+    entries.value = data
+  } else {
+    console.error(error)
   }
 }
+
+// INSERT MESSAGE
+const submitGuestbook = async () => {
+  const { error } = await supabase
+    .from('guestbook')
+    .insert([
+      {
+        name: name.value,
+        phone: phone.value,
+        message: message.value
+      }
+    ])
+
+  if (!error) {
+    name.value = ''
+    phone.value = ''
+    message.value = ''
+    fetchMessages() // refresh messages
+  } else {
+    console.error(error)
+  }
+}
+
+// LOAD ON PAGE OPEN
+onMounted(() => {
+  fetchMessages()
+})
 </script>
 
 <style scoped>
-/* Styles for guestbook container */
 .guestbook {
   width: 400px;
 }
@@ -60,39 +99,59 @@ async function submit() {
   background-color: #f8d7d7;
   padding: 20px;
   border-radius: 15px;
-  text-align: left;
+  height: 500px;
+  overflow-y: auto;
 }
 
 h2 {
   text-align: center;
-  margin-top: 0;
 }
 
 label {
   display: block;
-  margin-top: 15px;
+  margin-top: 10px;
+  font-size: 14px;
 }
 
 input,
 textarea {
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
+  padding: 6px;
+  margin-top: 4px;
   border-radius: 8px;
   border: none;
+  font-size: 13px;
 }
 
 .button-container {
   display: flex;
   justify-content: flex-end;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 button {
-  padding: 8px 15px;
+  padding: 6px 12px;
   border: none;
   border-radius: 8px;
   background-color: #f2b1b1;
   cursor: pointer;
+}
+
+/* MESSAGE DISPLAY */
+
+.messages {
+  margin-top: 20px;
+}
+
+.messages h3 {
+  font-size: 14px;
+}
+
+.message-box {
+  background: #ffffffaa;
+  padding: 8px;
+  border-radius: 10px;
+  margin-top: 8px;
+  font-size: 13px;
 }
 </style>
