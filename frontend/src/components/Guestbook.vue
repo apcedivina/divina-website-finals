@@ -5,34 +5,31 @@
       <h2>Guestbook</h2>
 
       <!-- FORM -->
-      <form @submit.prevent="submitGuestbook">
-        <label>Name</label>
-        <input v-model="name" type="text" required />
+      <label>Name</label>
+      <input v-model="name" type="text" />
 
-        <label>Phone Number</label>
-        <input v-model="phone" type="text" required />
+      <label>Phone Number</label>
+      <input v-model="phone" type="text" />
 
-        <label>Message</label>
-        <textarea v-model="message" rows="3" required></textarea>
+      <label>Message</label>
+      <textarea v-model="message" rows="3"></textarea>
 
-        <div class="button-container">
-          <button type="submit">Submit</button>
-        </div>
-      </form>
+      <div class="button-container">
+        <button @click="submitMessage">Submit</button>
+      </div>
 
-      <!-- DISPLAY MESSAGES BELOW -->
-      <div class="messages">
-        <h3>Messages</h3>
+      <!-- MESSAGES -->
+      <div class="messages" v-if="messages.length">
+        <h3>Messages:</h3>
 
-        <div 
-          v-for="entry in entries" 
-          :key="entry.id" 
+        <div
+          v-for="(msg, index) in messages"
+          :key="index"
           class="message-box"
         >
-          <strong>{{ entry.name }}</strong>
-          <p>{{ entry.message }}</p>
+          <p><strong>{{ msg.name }}</strong> ({{ msg.phone }})</p>
+          <p>{{ msg.message }}</p>
         </div>
-
       </div>
 
     </div>
@@ -41,53 +38,43 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { supabase } from '../supabase'
 
 const name = ref('')
 const phone = ref('')
 const message = ref('')
-const entries = ref([])
+const messages = ref([])
 
-// FETCH MESSAGES
-const fetchMessages = async () => {
-  const { data, error } = await supabase
-    .from('guestbook')
-    .select('*')
-    .order('id', { ascending: false })
-
-  if (!error) {
-    entries.value = data
-  } else {
-    console.error(error)
-  }
-}
-
-// INSERT MESSAGE
-const submitGuestbook = async () => {
-  const { error } = await supabase
-    .from('guestbook')
-    .insert([
-      {
-        name: name.value,
-        phone: phone.value,
-        message: message.value
-      }
-    ])
-
-  if (!error) {
-    name.value = ''
-    phone.value = ''
-    message.value = ''
-    fetchMessages() // refresh messages
-  } else {
-    console.error(error)
-  }
-}
-
-// LOAD ON PAGE OPEN
+/* LOAD saved messages when page loads */
 onMounted(() => {
-  fetchMessages()
+  const saved = localStorage.getItem('guestbookMessages')
+  if (saved) {
+    messages.value = JSON.parse(saved)
+  }
 })
+
+const submitMessage = () => {
+  if (!name.value || !message.value) {
+    alert('Please fill in required fields!')
+    return
+  }
+
+  messages.value.push({
+    name: name.value,
+    phone: phone.value,
+    message: message.value,
+    date: new Date().toLocaleString()
+  })
+
+  /* SAVE to localStorage */
+  localStorage.setItem(
+    'guestbookMessages',
+    JSON.stringify(messages.value)
+  )
+
+  name.value = ''
+  phone.value = ''
+  message.value = ''
+}
 </script>
 
 <style scoped>
@@ -99,18 +86,20 @@ onMounted(() => {
   background-color: #f8d7d7;
   padding: 20px;
   border-radius: 15px;
+  text-align: left;
   height: 500px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 h2 {
   text-align: center;
+  margin-top: 0;
 }
 
 label {
-  display: block;
   margin-top: 10px;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 input,
@@ -137,21 +126,21 @@ button {
   cursor: pointer;
 }
 
-/* MESSAGE DISPLAY */
-
-.messages {
-  margin-top: 20px;
+button:hover {
+  background-color: #e89b9b;
 }
 
-.messages h3 {
-  font-size: 14px;
+.messages {
+  margin-top: 15px;
+  overflow-y: auto;
+  flex-grow: 1;
 }
 
 .message-box {
-  background: #ffffffaa;
+  background-color: #ffecec;
   padding: 8px;
   border-radius: 10px;
   margin-top: 8px;
-  font-size: 13px;
+  font-size: 12px;
 }
 </style>
